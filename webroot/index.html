@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>File Upload</title>
+        <link rel="stylesheet" type="text/css" href="static/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <header id="siteHeader">
+                file upload
+            </header>
+            <section>
+                <div class="list-container">
+                    <div class="list-header">allowed extensions:</div>
+                    <ul class="list">
+                        <li class="list-item">
+                            images: .jpeg, .jpg, .png, .gif, .webp
+                        </li>
+                        <li class="list-item">videos: .mp4, .m4v, .webm</li>
+                        <li class="list-item">audio: .mp3, .ogg, .wav</li>
+                        <li class="list-item">text: .txt, .pdf</li>
+                    </ul>
+                </div>
+            </section>
+            <main>
+                <div id="filesContainer">
+                    <div
+                        id="dropArea"
+                    >
+                        Drag &amp; Drop files here or click to upload
+                    </div>
+                    <input
+                        type="file"
+                        name="files"
+                        id="files"
+                        multiple
+                        class="upload-button"
+                        style="display: none"
+                    />
+                    <div id="uploadedFiles" class="results"></div>
+                    <div id="errorMessage" class="error"></div>
+                </div>
+            </main>
+        </div>
+        <script src="static/script.js"></script>
+    </body>
+</html>

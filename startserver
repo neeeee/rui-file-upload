@@ -1,0 +1,2 @@
+#!/bin/bash
+nohup bun server.ts > output.log 2>&1 &
