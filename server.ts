@@ -5,6 +5,11 @@ import path from "path";
 const UPLOAD_DIR = path.join(process.cwd(), "webroot/uploads");
 const STATIC_DIR = path.join(process.cwd(), "webroot/static");
 const MAX_FILE_SIZE = 300 * 1024 * 1024;
+const SERVER_PORT = ""
+const SITE_URL = ""
+const TLS_KEY = ""
+const TLS_CERT = ""
+const HOSTNAME = "127.0.0.1" // change to 0.0.0.0 to serve publicly
 await fs.mkdir(UPLOAD_DIR, { recursive: true });
 
 const generateRandomFilename = () => {
@@ -21,11 +26,11 @@ const generateRandomFilename = () => {
 };
 
 Bun.serve({
-	port: 4000, // set your own port
-	hostname: "0.0.0.0",
+	port: SERVER_PORT, // set your own port
+	hostname: HOSTNAME,
   tls: {
-    cert: Bun.file("file.crt"), // path to tls cert
-    key: Bun.file("file.key") // path to tls key
+    cert: Bun.file(TLS_CERT), // path to tls cert
+    key: Bun.file(TLS_KEY) // path to tls key
 	},
 
   async fetch(req) {
@@ -114,7 +119,7 @@ async function handleFileUpload(req: Request) {
     const filePath = path.join(UPLOAD_DIR, randomFilename);
     await Bun.write(filePath, await file.arrayBuffer());
 
-    const fileUrl = `your_url_to_link/${randomFilename}`; // will be returned by the html form
+    const fileUrl = `${SITE_URL}/${randomFilename}`; // will be returned by the html form
     urls.push(fileUrl);
   }
   return new Response(JSON.stringify({ urls }), {
