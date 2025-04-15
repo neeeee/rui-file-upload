@@ -17,4 +17,4 @@ To run:
 	},
  ```
 2. `bun run index.ts` or `./startserver`
-3. `startserver` script requires `nohup` in PATH.
+> `startserver` script requires `nohup` in PATH.
