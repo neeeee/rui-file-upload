@@ -4,11 +4,11 @@ import path from "path";
 
 const UPLOAD_DIR = path.join(process.cwd(), "webroot/uploads");
 const STATIC_DIR = path.join(process.cwd(), "webroot/static");
-const MAX_FILE_SIZE = 300 * 1024 * 1024;
-const SERVER_PORT = ""
-const SITE_URL = ""
-const TLS_KEY = ""
-const TLS_CERT = ""
+const MAX_FILE_SIZE = 300 * 1024 * 1024; // 300 MB
+const SERVER_PORT = 3000; // change to your own port
+const SITE_URL = "https://example.com"; // change to your own url
+const TLS_KEY = ""; // change to your own tls key
+const TLS_CERT = ""; // change to your own tls cert
 const HOSTNAME = "127.0.0.1" // change to 0.0.0.0 to serve publicly
 await fs.mkdir(UPLOAD_DIR, { recursive: true });
 
