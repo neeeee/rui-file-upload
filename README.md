@@ -16,5 +16,5 @@ To run:
     key: Bun.file(TLS_KEY) // path to tls key
 	},
  ```
-2. `bun run index.ts` or `./startserver`
+2. `bun run server.ts` or `./startserver`
 > `startserver` script requires `nohup` in PATH.
