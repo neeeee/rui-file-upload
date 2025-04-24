@@ -204,6 +204,25 @@ body {
   -webkit-appearance: none;
 }
 
+#progressBar {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: grey;
+}
+
+#progressBarFill {
+width: 0%;
+height: 20px;
+transition: width 0.3s ease;
+text-align: center;
+line-height: 20px;
+color: white;
+font-size: 12px;
+background-color: green;
+}
+
 /* text boxes */
 #siteHeader {
   font-size: 2em;
