@@ -6,7 +6,7 @@ const UPLOAD_DIR = path.join(process.cwd(), "webroot/uploads");
 const STATIC_DIR = path.join(process.cwd(), "webroot/static");
 const MAX_FILE_SIZE = 300 * 1024 * 1024; // 300 MB
 const SERVER_PORT = 3000; // change to your own port
-const SITE_URL = "https://example.com"; // change to your own url
+const SITE_URL = "http://127.0.0.1"; // change to your own url
 const TLS_KEY = ""; // change to your own tls key
 const TLS_CERT = ""; // change to your own tls cert
 const HOSTNAME = "127.0.0.1" // change to 0.0.0.0 to serve publicly
@@ -28,10 +28,6 @@ const generateRandomFilename = () => {
 Bun.serve({
 	port: SERVER_PORT, // set your own port
 	hostname: HOSTNAME,
-  tls: {
-    cert: Bun.file(TLS_CERT), // path to tls cert
-    key: Bun.file(TLS_KEY) // path to tls key
-	},
 
   async fetch(req) {
     const url = new URL(req.url);
@@ -54,8 +50,11 @@ Bun.serve({
 });
 
 async function handleFileUpload(req: Request) {
+  console.log("Received file upload request");
   const formData = await req.formData();
+  console.log("Form data fields:", Array.from(formData.keys()));
   const files = formData.getAll("files");
+  console.log("Number of files:", files.length);
   const allowedExtensions = [
     ".jpeg",
     ".jpg",
@@ -73,6 +72,7 @@ async function handleFileUpload(req: Request) {
   ]; // change extensions as you wish
 
   if (!files.length) {
+    console.log("No files found in request");
     return new Response(JSON.stringify({ error: "No files uploaded." }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
@@ -80,6 +80,7 @@ async function handleFileUpload(req: Request) {
   }
 
   if (files.length > 5) {
+    console.log("Too many files:", files.length);
     return new Response(JSON.stringify({ error: "Too many files. limit: 5" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
@@ -90,10 +91,13 @@ async function handleFileUpload(req: Request) {
 
   for (const file of files) {
     if (!(file instanceof File)) {
+      console.log("Invalid file object:", file);
       continue;
     }
 
+    console.log("Processing file:", file.name, "Size:", file.size, "bytes");
     if (file.size > MAX_FILE_SIZE) {
+      console.log("File too large:", file.name, file.size);
       return new Response(
         JSON.stringify({
           error: `File ${file.name} exceeds the maximum size of 300 MB.`,
@@ -105,7 +109,10 @@ async function handleFileUpload(req: Request) {
       );
     }
 
-    if (!allowedExtensions.includes(path.extname(file.name))) {
+    const extension = path.extname(file.name);
+    console.log("File extension:", extension);
+    if (!allowedExtensions.includes(extension)) {
+      console.log("Invalid extension:", extension);
       return new Response(
         JSON.stringify({ error: "Cannot upload file. Extension not allowed." }),
         {
@@ -115,11 +122,11 @@ async function handleFileUpload(req: Request) {
       );
     }
 
-    const randomFilename = generateRandomFilename() + path.extname(file.name);
+    const randomFilename = generateRandomFilename() + extension;
     const filePath = path.join(UPLOAD_DIR, randomFilename);
     await Bun.write(filePath, await file.arrayBuffer());
 
-    const fileUrl = `${SITE_URL}/${randomFilename}`; // will be returned by the html form
+    const fileUrl = `${SITE_URL}:${SERVER_PORT}/uploads/${randomFilename}`; // will be returned by the html form
     urls.push(fileUrl);
   }
   return new Response(JSON.stringify({ urls }), {
