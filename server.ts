@@ -28,6 +28,7 @@ const generateRandomFilename = () => {
 Bun.serve({
 	port: SERVER_PORT, // set your own port
 	hostname: HOSTNAME,
+	maxRequestBodySize: MAX_FILE_SIZE,
 
   async fetch(req) {
     const url = new URL(req.url);
